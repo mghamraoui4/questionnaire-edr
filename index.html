@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Entre deux rives</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600&display=swap">
+<style>
+/* Jaquette de livre : colonne étroite, titre en grand, extraits sur papier, questionnaire en bas. Thème clair uniquement. */
+:root {
+  --bg: #f6f0e8;
+  --panel: #fffaf3;
+  --ink: #231a14;
+  --muted: #6a5a4d;
+  --accent: #9a3f1f;
+  --accent-ink: #fff8f0;
+  --line: #dccfc0;
+  --field: #fffdf9;
+  --paper: #fffdf8;
+  --paper-ink: #231a14;
+  --paper-muted: #6a5a4d;
+  --serif: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+  --sans: "Work Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--sans); font-size: 16px; line-height: 1.6;
+  padding: 40px max(16px, env(safe-area-inset-right, 0px)) 72px max(16px, env(safe-area-inset-left, 0px));
+}
+main { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 600; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.eyebrow { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+
+.hero { display: flex; flex-direction: column; gap: 18px; }
+.notice { align-self: flex-start; font-size: 13px; color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 4px 12px; }
+.hero h1 { font-size: clamp(3rem, 12vw, 5.2rem); line-height: .95; font-weight: 700; letter-spacing: -.01em; }
+.hero .sub { font-family: var(--serif); font-style: italic; font-size: 1.5rem; color: var(--muted); }
+.hero .by { font-size: 14px; letter-spacing: .12em; text-transform: uppercase; }
+
+.resume { display: flex; flex-direction: column; gap: 16px; font-size: 1.05rem; max-width: 62ch; }
+.voices { border-left: 2px solid var(--accent); padding-left: 16px; color: var(--muted); }
+.voices em { font-family: var(--serif); font-size: 1.15rem; color: var(--ink); }
+
+.extrait, .quiz { display: flex; flex-direction: column; gap: 18px; }
+.extrait h2, .quiz h2 { font-size: 2rem; }
+.paper {
+  background: var(--paper); color: var(--paper-ink); border: 1px solid var(--line); border-radius: 4px;
+  padding: clamp(20px, 5vw, 40px); font-family: var(--serif); font-size: 1.28rem; line-height: 1.55; font-weight: 500;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.paper .tag { font-family: var(--sans); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--paper-muted); font-weight: 500; }
+.paper .dateline { font-style: italic; color: var(--paper-muted); }
+.paper .celia { font-style: italic; text-align: center; color: var(--paper-muted); padding-inline: 8px; }
+.paper hr { border: 0; border-top: 1px solid var(--line); width: 56px; margin: 8px auto; }
+
+.quiz { gap: 28px; }
+.quiz .intro { color: var(--muted); max-width: 58ch; }
+form { display: flex; flex-direction: column; gap: 28px; }
+fieldset { border: 0; padding: 0; margin: 0; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+legend { padding: 0; font-weight: 600; margin-bottom: 4px; }
+legend small { font-weight: 400; color: var(--muted); }
+.opt { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; min-width: 0; transition: border-color .15s; }
+.opt:hover, .opt:has(input:checked) { border-color: var(--accent); }
+.opt input { margin-top: 4px; accent-color: var(--accent); flex: none; width: 18px; height: 18px; }
+.opt span { min-width: 0; overflow-wrap: anywhere; }
+.opt.phrase span { font-family: var(--serif); font-size: 1.2rem; line-height: 1.35; }
+.opt.phrase b { font-family: var(--sans); font-size: 12px; color: var(--accent); letter-spacing: .1em; display: block; margin-bottom: 2px; }
+textarea { width: 100%; min-height: 110px; resize: vertical; background: var(--field); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; font: inherit; }
+input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button { font: inherit; font-weight: 600; cursor: pointer; background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 8px; padding: 12px 20px; }
+button[disabled] { opacity: .6; cursor: default; }
+button.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.error { color: var(--accent); font-size: 14px; min-height: 1.2em; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.result { display: flex; flex-direction: column; gap: 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 20px; }
+.result textarea { min-height: 200px; font-size: 14px; }
+.result p { color: var(--muted); }
+footer { color: var(--muted); font-size: 13px; max-width: 62ch; }
+@media (prefers-reduced-motion: reduce) { .opt { transition: none; } }
+</style>
+</head>
+<body>
+<main>
+  <header class="hero">
+    <span class="notice">Version de travail · lecteurs tests</span>
+    <p class="eyebrow">Récit autobiographique</p>
+    <h1>Entre deux rives</h1>
+    <p class="sub">D’un juriste à un homme des réseaux</p>
+    <p class="by">Mohamed Ghamraoui</p>
+  </header>
+
+  <section class="resume" aria-label="Résumé">
+    <p>Un fils d’enseignant marocain devait devenir juriste. Ce livre raconte les quinze années qui ont suivi : l’autorité d’un père, des études de droit d’abord subies puis habitées, un tribunal, des comptoirs de café, et l’entrée, à vingt ans, dans un centre d’appels qui deviendra un métier dans les réseaux télécoms.</p>
+    <p class="voices">Deux voix se répondent. Celle de l’auteur, et celle de <em>Célia</em>, sa psychothérapeute, qui dit en italique ce qu’il n’arrive pas à dire lui-même. Tous les événements sont réels. Les noms ont été remplacés.</p>
+  </section>
+
+  <section class="extrait" aria-label="Extraits">
+    <p class="eyebrow">Deux extraits</p>
+    <h2>Lis, puis dis-moi</h2>
+
+    <article class="paper">
+      <span class="tag">Message de Memo · clôture de la première partie</span>
+      <p class="dateline">Mohammedia, mardi 29 septembre 2026, à une table de café, après le dîner.</p>
+      <p>Je suis assis avec un ami, pour consolider son œuvre. Entre deux pages de son manuscrit, j’ouvre le mien. Aujourd’hui, j’ai passé ma journée devant des écrans, des plans de fibre et des tickets d’incident.</p>
+      <p>Ma licence en sciences juridiques, option française, parcours droit privé, dort dans une pochette en plastique transparent, parmi mes documents officiels. Je ne l’ouvre que pour en fournir une copie.</p>
+      <p>Je n’ai pas gardé du droit ce que je croyais. J’ai gardé un réflexe : lire un contrat jusqu’à la dernière clause avant de signer.</p>
+    </article>
+
+    <article class="paper">
+      <span class="tag">Entre les deux rives · « Les comptoirs »</span>
+      <p>J’y suis parvenu : licence en sciences juridiques, option française, parcours droit privé, obtenue en trois ans. J’étais fier de moi. Personne, dans ma famille, ne l’a été. On y a vu un simple passage, un succès banal.</p>
+      <p>Personne n’a compté mes réveils à six heures du matin, par deux degrés, sous la pluie, ni ces matins où j’essuyais mes larmes, seul, avant de continuer. Personne n’a mesuré mes sacrifices. Je n’étais pas là pour jouer un rôle.</p>
+      <hr>
+      <p class="celia">Il ne dit pas qu’il attendait, ce jour-là, qu’on lui demande seulement comment s’étaient passées ces trois années.</p>
+    </article>
+  </section>
+
+  <section class="quiz" aria-label="Questionnaire">
+    <p class="eyebrow">Sept questions · deux minutes</p>
+    <h2>Ton avis, sans politesse</h2>
+    <p class="intro">Je veux savoir si ce livre mérite d’exister pour d’autres que moi. Réponds franchement : un « non » m’aide autant qu’un « oui ». Les réponses sont anonymes : aucun nom, aucun e-mail, aucune adresse n’est demandé ni enregistré. Évite de signer ton commentaire.</p>
+
+    <form id="quizForm" novalidate>
+      <div class="hp" aria-hidden="true"><label>Ne pas remplir <input type="text" id="website" tabindex="-1" autocomplete="off"></label></div>
+
+      <fieldset id="q1">
+        <legend>1. Après ces extraits, voudrais-tu lire la suite ?</legend>
+        <label class="opt"><input type="radio" name="suite" value="Oui, sûrement"><span>Oui, sûrement</span></label>
+        <label class="opt"><input type="radio" name="suite" value="Peut-être"><span>Peut-être</span></label>
+        <label class="opt"><input type="radio" name="suite" value="Non"><span>Non</span></label>
+      </fieldset>
+
+      <fieldset id="q2">
+        <legend>2. Laquelle de ces phrases te donne le plus envie d’ouvrir le livre ?</legend>
+        <label class="opt phrase"><input type="radio" name="phrase" value="A"><span><b>A</b>L’histoire d’un fils qui devait devenir juriste, et de tout ce qu’il a traversé pour ne pas se perdre.</span></label>
+        <label class="opt phrase"><input type="radio" name="phrase" value="B"><span><b>B</b>Un père, un diplôme, un oncle, un tribunal, un comptoir de café : comment on se trouve quand les chemins tracés se ferment.</span></label>
+        <label class="opt phrase"><input type="radio" name="phrase" value="C"><span><b>C</b>Avant de dire un mot à votre enfant, lisez ce que ce mot peut devenir plus tard.</span></label>
+        <label class="opt"><input type="radio" name="phrase" value="Aucune"><span>Aucune des trois</span></label>
+      </fieldset>
+
+      <fieldset id="q3">
+        <legend>3. À qui l’offrirais-tu ? <small>(plusieurs réponses possibles)</small></legend>
+        <label class="opt"><input type="checkbox" name="offre" value="Un jeune en orientation"><span>Un jeune en orientation</span></label>
+        <label class="opt"><input type="checkbox" name="offre" value="Un parent"><span>Un parent</span></label>
+        <label class="opt"><input type="checkbox" name="offre" value="Un ami en reconversion"><span>Un ami en reconversion</span></label>
+        <label class="opt"><input type="checkbox" name="offre" value="Un juriste ou un étudiant en droit"><span>Un juriste ou un étudiant en droit</span></label>
+        <label class="opt"><input type="checkbox" name="offre" value="Personne"><span>Personne</span></label>
+      </fieldset>
+
+      <fieldset id="q4">
+        <legend>4. Les lignes en italique de Célia, tu les trouves…</legend>
+        <label class="opt"><input type="radio" name="celia" value="Utiles"><span>Utiles : elles ajoutent quelque chose</span></label>
+        <label class="opt"><input type="radio" name="celia" value="Neutres"><span>Neutres</span></label>
+        <label class="opt"><input type="radio" name="celia" value="Gênantes"><span>Gênantes : elles coupent la lecture</span></label>
+      </fieldset>
+
+      <fieldset id="q5">
+        <legend>5. À quel prix achèterais-tu ce livre (format papier) ?</legend>
+        <label class="opt"><input type="radio" name="prix" value="Moins de 50 DH"><span>Moins de 50 DH</span></label>
+        <label class="opt"><input type="radio" name="prix" value="50 à 80 DH"><span>50 à 80 DH</span></label>
+        <label class="opt"><input type="radio" name="prix" value="80 à 120 DH"><span>80 à 120 DH</span></label>
+        <label class="opt"><input type="radio" name="prix" value="Plus de 120 DH"><span>Plus de 120 DH</span></label>
+        <label class="opt"><input type="radio" name="prix" value="Je ne l'achèterais pas"><span>Je ne l’achèterais pas</span></label>
+      </fieldset>
+
+      <fieldset id="q6">
+        <legend>6. Tu es plutôt…</legend>
+        <label class="opt"><input type="radio" name="profil" value="Jeune adulte, études ou orientation"><span>Un jeune adulte, en études ou en orientation</span></label>
+        <label class="opt"><input type="radio" name="profil" value="Parent"><span>Un parent</span></label>
+        <label class="opt"><input type="radio" name="profil" value="Professionnel en reconversion"><span>Un professionnel en reconversion</span></label>
+        <label class="opt"><input type="radio" name="profil" value="Juriste ou étudiant en droit"><span>Un juriste ou un étudiant en droit</span></label>
+        <label class="opt"><input type="radio" name="profil" value="Autre"><span>Autre</span></label>
+      </fieldset>
+
+      <fieldset id="q7">
+        <legend>7. Ce qui t’a le plus accroché, ou le plus manqué <small>(facultatif)</small></legend>
+        <textarea id="libre" maxlength="800" placeholder="Une phrase suffit. Pas de nom, s’il te plaît."></textarea>
+      </fieldset>
+
+      <div class="actions"><button type="submit" id="go">Envoyer mes réponses</button></div>
+      <p class="error" id="err" role="alert"></p>
+    </form>
+
+    <section class="result" id="thanks" hidden aria-live="polite">
+      <h3>Merci.</h3>
+      <p>Tes réponses sont envoyées, de façon anonyme. Elles m’aident à décider si ce livre a sa place.</p>
+    </section>
+
+    <section class="result" id="fallback" hidden aria-live="polite">
+      <h3>L’envoi n’a pas abouti.</h3>
+      <p>Copie ce texte et renvoie-le-moi par message. Il ne contient aucune information sur toi.</p>
+      <textarea id="out" readonly aria-label="Mes réponses"></textarea>
+      <div class="actions">
+        <button type="button" id="copy">Copier mes réponses</button>
+      </div>
+      <p id="copied" role="status"></p>
+    </section>
+  </section>
+
+  <footer>Version de travail, relue seulement par l’auteur. Merci de ne pas diffuser ces extraits.</footer>
+</main>
+
+<script>
+(function () {
+  // Colle ici l'URL de ton déploiement Google Apps Script (elle se termine par /exec).
+  var ENDPOINT = 'COLLE_ICI_L_URL_APPS_SCRIPT';
+
+  var form = document.getElementById('quizForm');
+  var go = document.getElementById('go');
+  var err = document.getElementById('err');
+  var thanks = document.getElementById('thanks');
+  var fallback = document.getElementById('fallback');
+  var out = document.getElementById('out');
+  var copied = document.getElementById('copied');
+
+  function one(name) {
+    var el = form.querySelector('input[name="' + name + '"]:checked');
+    return el ? el.value : '';
+  }
+  function many(name) {
+    var list = form.querySelectorAll('input[name="' + name + '"]:checked');
+    var arr = [];
+    for (var i = 0; i < list.length; i++) arr.push(list[i].value);
+    return arr.join(' | ');
+  }
+  function show(el) { form.hidden = true; el.hidden = false; el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!one('suite')) {
+      err.textContent = 'Réponds au moins à la question 1.';
+      document.getElementById('q1').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    err.textContent = '';
+    var payload = {
+      website: document.getElementById('website').value,
+      suite: one('suite'),
+      phrase: one('phrase'),
+      offre: many('offre'),
+      celia: one('celia'),
+      prix: one('prix'),
+      profil: one('profil'),
+      libre: document.getElementById('libre').value.trim().slice(0, 800)
+    };
+
+    function toFallback() {
+      out.value = [
+        'Entre deux rives — mes réponses',
+        '1. Lire la suite : ' + (payload.suite || '—'),
+        '2. Phrase préférée : ' + (payload.phrase || '—'),
+        '3. Je l’offrirais à : ' + (payload.offre || '—'),
+        '4. Les lignes de Célia : ' + (payload.celia || '—'),
+        '5. Prix : ' + (payload.prix || '—'),
+        '6. Mon profil : ' + (payload.profil || '—'),
+        '7. Commentaire : ' + (payload.libre || '—')
+      ].join('\n');
+      show(fallback);
+    }
+
+    if (ENDPOINT.indexOf('https://') !== 0) { toFallback(); return; }
+
+    go.disabled = true;
+    go.textContent = 'Envoi…';
+    // Apps Script n'autorise pas la lecture de la réponse depuis un autre site : on envoie en no-cors.
+    fetch(ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    }).then(function () {
+      show(thanks);
+    }, function () {
+      toFallback();
+    });
+  });
+
+  document.getElementById('copy').addEventListener('click', function () {
+    function manual() {
+      out.focus(); out.select();
+      copied.textContent = 'Le texte est sélectionné : copie-le avec ton clavier ou ton menu.';
+    }
+    try {
+      navigator.clipboard.writeText(out.value).then(function () {
+        copied.textContent = 'Copié. Colle-le dans ta réponse.';
+      }, manual);
+    } catch (x) { manual(); }
+  });
+})();
+</script>
+</body>
+</html>
